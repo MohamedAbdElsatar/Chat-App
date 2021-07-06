@@ -4,8 +4,13 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+   // Firebase.initializeApp();
+    return Scaffold(
+      floatingActionButton: FloatingActionButton( 
+        child: Icon(Icons.add),
+        onPressed: (){
+        
+      }),
     );
   }
 }

@@ -4,43 +4,38 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 class FormInput extends StatefulWidget {
   final Function submitFunction;
   FormInput(
-      this.submitFunction(
-    String email,
-    String username,
-    String password,
-    bool isLogIn,
-  ));
+      this.submitFunction(String username,String email,  String password,
+          bool isLogIn, BuildContext context));
   @override
   _FormInputState createState() => _FormInputState();
 }
 
 class _FormInputState extends State<FormInput> {
   final _keyForm = GlobalKey<FormState>();
-  bool _haveAccount = true;
+  bool _haveAccount = false;
   bool _isVisable = true;
   var username = "";
   var password = "";
   var email = "";
   final elevationBtnStyle = ElevatedButton.styleFrom(
-    elevation: 5,
-    padding: EdgeInsets.symmetric(vertical: 12),
-    onPrimary: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(20),
-    ),
-  );
+      elevation: 5,
+      padding: EdgeInsets.symmetric(vertical: 12),
+      onPrimary: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ));
   final outlineBtnStyle = ElevatedButton.styleFrom(
-    elevation: 5,
-    padding: EdgeInsets.symmetric(vertical: 12),
-    onPrimary: Colors.red,
-    primary: Colors.white,
-    shape: RoundedRectangleBorder(
-      side: BorderSide(color: Colors.red),
-      borderRadius: BorderRadius.circular(20),
-    ),
-  );
+      elevation: 5,
+      padding: EdgeInsets.symmetric(vertical: 12),
+      onPrimary: Colors.red,
+      primary: Colors.white,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.red),
+        borderRadius: BorderRadius.circular(20),
+      ));
   final neumorphocStyle = NeumorphicStyle(
       color: Colors.white, boxShape: NeumorphicBoxShape.stadium());
+
   void _onSave() {
     final valid = _keyForm.currentState!.validate();
     if (!valid) {
@@ -48,7 +43,8 @@ class _FormInputState extends State<FormInput> {
       return;
     }
     _keyForm.currentState!.save();
-    widget.submitFunction(username, email, password, _haveAccount);
+    widget.submitFunction(
+        username.trim(), email.trim(), password.trim(), _haveAccount, context);
     FocusScope.of(context).unfocus();
   }
 
@@ -75,7 +71,7 @@ class _FormInputState extends State<FormInput> {
                       key: _keyForm,
                       child: Column(
                         children: [
-                          if (_haveAccount)
+                          if (!_haveAccount)
                             Neumorphic(
                               style: neumorphocStyle,
                               margin: EdgeInsets.only(top: 20),
@@ -108,7 +104,7 @@ class _FormInputState extends State<FormInput> {
                             child: TextFormField(
                               key: ValueKey('email'),
                               onSaved: (value) {
-                                email = value!;
+                                email =  value!;
                               },
                               validator: (value) {
                                 if (value!.isEmpty ||
@@ -175,7 +171,7 @@ class _FormInputState extends State<FormInput> {
                               child: ElevatedButton(
                                 onPressed: _onSave,
                                 child: Text(
-                                  _haveAccount ? "SignUp" : "logIn",
+                                  _haveAccount ? "LogIn" : "SignUp",
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 style: _haveAccount
@@ -199,8 +195,8 @@ class _FormInputState extends State<FormInput> {
                                 },
                                 child: Text(
                                   _haveAccount
-                                      ? "Alrady have an account"
-                                      : "Create new account",
+                                      ? "Create new account"
+                                      : "Already have an account",
                                   style: TextStyle(fontSize: 18),
                                 ),
                                 style: _haveAccount

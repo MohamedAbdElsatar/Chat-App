@@ -3,9 +3,16 @@ import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 
 class FormInput extends StatefulWidget {
   final Function submitFunction;
+  final bool  isLoading;
   FormInput(
-      this.submitFunction(String username,String email,  String password,
-          bool isLogIn, BuildContext context));
+      this.isLoading,
+      this.submitFunction(
+    String username,
+    String email,
+    String password,
+    bool isLogIn,
+    BuildContext context,
+  ));
   @override
   _FormInputState createState() => _FormInputState();
 }
@@ -44,7 +51,12 @@ class _FormInputState extends State<FormInput> {
     }
     _keyForm.currentState!.save();
     widget.submitFunction(
-        username.trim(), email.trim(), password.trim(), _haveAccount, context);
+      username.trim(),
+      email.trim(),
+      password.trim(),
+      _haveAccount,
+      context,
+    );
     FocusScope.of(context).unfocus();
   }
 
@@ -104,7 +116,7 @@ class _FormInputState extends State<FormInput> {
                             child: TextFormField(
                               key: ValueKey('email'),
                               onSaved: (value) {
-                                email =  value!;
+                                email = value!;
                               },
                               validator: (value) {
                                 if (value!.isEmpty ||
@@ -162,6 +174,8 @@ class _FormInputState extends State<FormInput> {
                     ),
                     SizedBox(height: 50),
                     //signUp & logIn buttons
+                   if (widget.isLoading )CircularProgressIndicator(),
+                    if (!widget.isLoading )
                     Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
